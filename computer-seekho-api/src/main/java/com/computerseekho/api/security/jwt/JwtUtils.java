@@ -1,12 +1,7 @@
 package com.computerseekho.api.security.jwt;
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 import com.computerseekho.api.security.services.StaffDetailsImpl;
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
