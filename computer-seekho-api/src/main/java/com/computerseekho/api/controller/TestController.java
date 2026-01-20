@@ -23,8 +23,8 @@ public class TestController {
     }
 
     @GetMapping("/non-teaching")
-    @PreAuthorize("hasRole('NON_TEACHING')")
+    @PreAuthorize("hasRole('NON_TEACHING') or hasRole('TEACHING')")
     public String nonTeachingAccess() {
-        return "Non-Teaching Staff Content - Only non-teaching staff can access this!";
+        return "Non-Teaching Staff Content - access by non-teaching staff and teaching staff can access this!";
     }
 }
