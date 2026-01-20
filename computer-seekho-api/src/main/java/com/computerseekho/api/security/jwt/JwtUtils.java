@@ -1,5 +1,6 @@
 package com.computerseekho.api.security.jwt;
 
+import com.computerseekho.api.security.services.StaffDetailsImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -25,7 +26,7 @@ public class JwtUtils {
 
     // Generate JWT token from user details
     public String generateJwtToken(Authentication authentication) {
-        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+        StaffDetailsImpl userPrincipal = (StaffDetailsImpl) authentication.getPrincipal();
 
         return Jwts.builder()
                 .setSubject(userPrincipal.getUsername())
