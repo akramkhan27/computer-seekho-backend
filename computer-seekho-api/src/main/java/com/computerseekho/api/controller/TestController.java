@@ -23,8 +23,20 @@ public class TestController {
     }
 
     @GetMapping("/non-teaching")
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     @PreAuthorize("hasRole('NON_TEACHING') or hasRole('TEACHING')")
     public String nonTeachingAccess() {
         return "Non-Teaching Staff Content - access by non-teaching staff and teaching staff can access this!";
+=======
+    @PreAuthorize("hasRole('NON_TEACHING')")
+    public String nonTeachingAccess() {
+        return "Non-Teaching Staff Content - Only non-teaching staff can access this!";
+>>>>>>> Stashed changes
+=======
+    @PreAuthorize("hasRole('NON_TEACHING')")
+    public String nonTeachingAccess() {
+        return "Non-Teaching Staff Content - Only non-teaching staff can access this!";
+>>>>>>> Stashed changes
     }
 }
