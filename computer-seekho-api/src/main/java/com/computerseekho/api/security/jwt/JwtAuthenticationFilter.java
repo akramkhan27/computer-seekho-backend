@@ -1,6 +1,5 @@
 package com.computerseekho.api.security.jwt;
 
-import com.computerseekho.api.security.services.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,6 +1,6 @@
 package com.computerseekho.api.security.services;
 
-import com.computerseekho.api.entity.User;
+import com.computerseekho.api.entity.Staff;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,37 +10,44 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Collections;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDetailsImpl implements UserDetails {
+public class StaffDetailsImpl implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id;
-    private String username;
-    private String email;
+    private Integer staffId;
+    private String staffUsername;
+    private String staffEmail;
+    private String staffName;
+    private String staffRole;
 
     @JsonIgnore
-    private String password;
+    private String staffPassword;
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    // Build UserDetailsImpl from User entity
-    public static UserDetailsImpl build(User user) {
-        List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
-                .collect(Collectors.toList());
+    // Build StaffDetailsImpl from Staff entity
+    public static StaffDetailsImpl build(Staff staff) {
+        // Convert staff role to Spring Security authority
+        GrantedAuthority authority;
+        if ("teaching".equalsIgnoreCase(staff.getStaffRole())) {
+            authority = new SimpleGrantedAuthority("ROLE_TEACHING");
+        } else {
+            authority = new SimpleGrantedAuthority("ROLE_NON_TEACHING");
+        }
 
-        return new UserDetailsImpl(
-                user.getId(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getPassword(),
-                authorities
+        return new StaffDetailsImpl(
+                staff.getStaffId(),
+                staff.getStaffUsername(),
+                staff.getStaffEmail(),
+                staff.getStaffName(),
+                staff.getStaffRole(),
+                staff.getStaffPassword(),
+                Collections.singletonList(authority)
         );
     }
 
@@ -51,12 +58,12 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return staffPassword;
     }
 
     @Override
     public String getUsername() {
-        return username;
+        return staffUsername;
     }
 
     @Override

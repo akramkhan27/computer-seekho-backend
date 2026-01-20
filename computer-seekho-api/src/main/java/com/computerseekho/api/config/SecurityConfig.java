@@ -2,7 +2,7 @@ package com.computerseekho.api.config;
 
 import com.computerseekho.api.security.jwt.AuthEntryPointJwt;
 import com.computerseekho.api.security.jwt.JwtAuthenticationFilter;
-import com.computerseekho.api.security.services.UserDetailsServiceImpl;
+import com.computerseekho.api.security.services.StaffDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    private StaffDetailsServiceImpl staffDetailsService;
 
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
@@ -38,7 +38,7 @@ public class SecurityConfig {
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
-        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setUserDetailsService(staffDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
 
         return authProvider;
