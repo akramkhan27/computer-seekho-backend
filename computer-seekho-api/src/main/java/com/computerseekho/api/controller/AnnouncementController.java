@@ -6,8 +6,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/announcements") // React URL
-@CrossOrigin(origins = "*")
-
 public class AnnouncementController {
 
     private final AnnouncementService announcementService;

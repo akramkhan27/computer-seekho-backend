@@ -80,12 +80,10 @@ public class CourseServiceImpl implements CourseService {
     private CourseResponseDTO mapToDTO(Course course) {
         CourseResponseDTO dto = new CourseResponseDTO();
         dto.setCourseId(course.getCourseId());
-        dto.setCourseDescription((course.getCourseDescription()));
         dto.setCourseName(course.getCourseName());
         dto.setCourseDuration(course.getCourseDuration());
         dto.setCourseFees(course.getCourseFees());
         dto.setCourseIsActive(course.getCourseIsActive());
-
         return dto;
     }
 }
