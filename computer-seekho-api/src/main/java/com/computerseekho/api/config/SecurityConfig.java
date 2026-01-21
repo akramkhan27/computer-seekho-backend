@@ -64,6 +64,13 @@ public class SecurityConfig {
                                 .requestMatchers("/api/test/**").permitAll()
                                 .requestMatchers("/api/announcements/**").permitAll()
                                 .requestMatchers("/api/students/**").permitAll()
+                                //
+                                .requestMatchers(
+                                        "/error",
+                                        "/api/auth/**",
+                                        "/api/albums/campus-life",
+                                        "/uploads/**"
+                                ).permitAll()
                                 .anyRequest().authenticated()
                 );
 
