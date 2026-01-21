@@ -19,27 +19,47 @@ public class Album {
     @Column(name = "album_id")
     private Integer albumId;
 
-    @Column(name = "album_name", nullable = false, length = 100)
+    // PLACEMENT / CAMPUS_LIFE / RECRUITER
+    @Column(name = "album_type", nullable = false, length = 30)
+    private String albumType;
+
+    // DAC / DBDA / NULL (for campus life)
+    @Column(name = "program_code", length = 20)
+    private String programCode;
+
+    @Column(name = "album_name", nullable = false, length = 150)
     private String albumName;
 
-    @Column(name = "album_description", columnDefinition = "TEXT")
+    @Column(name = "album_description", length = 255)
     private String albumDescription;
 
+    // Batch / event start date
     @Column(name = "start_date")
     private LocalDateTime startDate;
 
+    // Batch / event end date
     @Column(name = "end_date")
     private LocalDateTime endDate;
 
+    // 1 = On, 0 = Off
     @Column(name = "album_is_active")
     private Boolean albumIsActive = true;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
     // ---------- Audit ----------
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 }
