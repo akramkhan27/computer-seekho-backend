@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Entity
-@Table(name = "Student_Master")
+@Table(name = "student_master")
 public class Student {
 
     @Id
