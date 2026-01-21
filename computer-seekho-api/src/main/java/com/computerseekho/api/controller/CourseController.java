@@ -47,4 +47,5 @@ public class CourseController {
     public CourseResponseDTO getCourseById(@PathVariable Integer courseId) {
         return courseService.getCourseById(courseId);
     }
+    // delete will be added (task pending for akram assign by sachin)
 }
