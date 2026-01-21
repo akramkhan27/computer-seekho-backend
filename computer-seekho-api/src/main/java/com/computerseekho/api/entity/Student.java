@@ -5,17 +5,15 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 @Data
-@Getter
-@Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
 @Entity
 @Table(name = "student_master")
 public class Student {
 
-    // PRIMARY KEY
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "student_id")
@@ -42,15 +40,15 @@ public class Student {
     @Column(name = "student_mobile", nullable = false)
     private Long studentMobile;
 
-    // 🔗 FOREIGN KEY → batch_master
+    // FOREIGN KEY (batch_master)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "batch_id")
+    @JoinColumn(name = "batch_id", nullable = false)
     private Batch batch;
 
-    // 🔗 FOREIGN KEY → course_master
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id")
+    @JoinColumn(name = "course_id", nullable = false)
     private Course course;
+
 
     @Column(name = "student_password", length = 255)
     private String studentPassword;
@@ -75,8 +73,5 @@ public class Student {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
-
-
-
 
 }
