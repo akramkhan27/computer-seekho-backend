@@ -1,19 +1,14 @@
 package com.computerseekho.api.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Setter
-@Getter
+
 @Entity
-@Table(name = "student_master")
+@Table(name = "Student_Master")
 public class Student {
 
+    // PRIMARY KEY
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "student_id")
@@ -41,14 +36,12 @@ public class Student {
     private Long studentMobile;
 
     // FOREIGN KEY (batch_master)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "batch_id", nullable = false)
-    private Batch batch;
+    @Column(name = "batch_id")
+    private Integer batchId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id", nullable = false)
-    private Course course;
-
+    // FOREIGN KEY (course_master)
+    @Column(name = "course_id")
+    private Integer courseId;
 
     @Column(name = "student_password", length = 255)
     private String studentPassword;
@@ -74,4 +67,109 @@ public class Student {
         updatedAt = LocalDateTime.now();
     }
 
+    // GETTERS & SETTERS (camelCase)
+
+    public Integer getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+    public String getStudentAddress() {
+        return studentAddress;
+    }
+
+    public void setStudentAddress(String studentAddress) {
+        this.studentAddress = studentAddress;
+    }
+
+    public String getStudentGender() {
+        return studentGender;
+    }
+
+    public void setStudentGender(String studentGender) {
+        this.studentGender = studentGender;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    public LocalDate getStudentDob() {
+        return studentDob;
+    }
+
+    public void setStudentDob(LocalDate studentDob) {
+        this.studentDob = studentDob;
+    }
+
+    public String getStudentQualification() {
+        return studentQualification;
+    }
+
+    public void setStudentQualification(String studentQualification) {
+        this.studentQualification = studentQualification;
+    }
+
+    public Long getStudentMobile() {
+        return studentMobile;
+    }
+
+    public void setStudentMobile(Long studentMobile) {
+        this.studentMobile = studentMobile;
+    }
+
+    public Integer getBatchId() {
+        return batchId;
+    }
+
+    public void setBatchId(Integer batchId) {
+        this.batchId = batchId;
+    }
+
+    public Integer getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
+    }
+
+    public String getStudentPassword() {
+        return studentPassword;
+    }
+
+    public void setStudentPassword(String studentPassword) {
+        this.studentPassword = studentPassword;
+    }
+
+    public String getStudentUsername() {
+        return studentUsername;
+    }
+
+    public void setStudentUsername(String studentUsername) {
+        this.studentUsername = studentUsername;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 }
