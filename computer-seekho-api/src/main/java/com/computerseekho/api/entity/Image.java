@@ -1,5 +1,4 @@
 package com.computerseekho.api.entity;
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,6 +39,7 @@ public class Image {
     private LocalDateTime createdAt;
 
     // ---------- Audit ----------
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
