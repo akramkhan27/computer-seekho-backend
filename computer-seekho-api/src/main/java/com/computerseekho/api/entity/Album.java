@@ -20,7 +20,6 @@ public class Album {
     private Integer albumId;
 
     // PLACEMENT / CAMPUS_LIFE / RECRUITER
-
     @Enumerated(EnumType.STRING)
     @Column(name = "album_type", nullable = false, length = 30)
     private AlbumType albumType;
