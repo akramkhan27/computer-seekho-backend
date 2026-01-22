@@ -1,9 +1,16 @@
 package com.computerseekho.api.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "Student_Master")
 public class Student {
