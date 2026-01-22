@@ -18,20 +18,17 @@ public class Image {
     @Column(name = "image_id")
     private Integer imageId;
 
-    // FK → album_master.album_id
+    @Column(name = "image_path", nullable = false, length = 255)
+    private String imagePath;
+
+    // FK → album_master
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "album_id", nullable = false)
     private Album album;
 
-    // Relative path
-    @Column(name = "image_path", nullable = false, length = 255)
-    private String imagePath;
-
-    // 1 = Cover, 0 = Normal (Default = 0)
     @Column(name = "is_album_cover")
     private Boolean isAlbumCover = false;
 
-    // 1 = On, 0 = Off
     @Column(name = "image_is_active")
     private Boolean imageIsActive = true;
 

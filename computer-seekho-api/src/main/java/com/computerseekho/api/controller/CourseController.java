@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/courses")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class CourseController {
 
     private final CourseService courseService;
@@ -47,4 +48,5 @@ public class CourseController {
     public CourseResponseDTO getCourseById(@PathVariable Integer courseId) {
         return courseService.getCourseById(courseId);
     }
+    // delete will be added (task pending for akram assign by sachin)
 }
