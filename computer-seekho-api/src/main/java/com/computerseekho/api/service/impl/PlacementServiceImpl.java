@@ -56,10 +56,10 @@ public class PlacementServiceImpl implements PlacementService {
 
     @Override
     public List<ImageResponseDTO> getPlacementAlbumImages(Integer albumId) {
-
         return placementImageRepository
                 .findByAlbum_AlbumIdAndImageIsActiveTrue(albumId)
                 .stream()
+                .filter(img -> !img.getIsAlbumCover()) //  Exclude cover images
                 .map(img -> new ImageResponseDTO(
                         img.getImageId(),
                         img.getImagePath()

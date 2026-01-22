@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/placements")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class PlacementController {
 
     private final PlacementService placementService;
