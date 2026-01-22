@@ -68,6 +68,8 @@ public class SecurityConfig {
                                         "/api/albums/campus-life"
                                 ).permitAll()
                                 .requestMatchers("/api/courses/**").permitAll()
+                                .requestMatchers("/api/placements/**").permitAll()
+
                                 .anyRequest().authenticated()
 
                 );
