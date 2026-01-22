@@ -66,7 +66,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/students/**").permitAll()
                                 //
                                 .requestMatchers(
-                                        "/error",
+//                                        "/error",
                                         "/api/auth/**",
                                         "/api/albums/campus-life",
                                         "/uploads/**"
