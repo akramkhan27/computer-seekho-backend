@@ -5,10 +5,16 @@ import com.computerseekho.api.dto.request.StaffSignupRequest;
 import com.computerseekho.api.dto.response.MessageResponse;
 import com.computerseekho.api.dto.response.StaffJwtResponse;
 import com.computerseekho.api.service.StaffAuthService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+
+import java.io.IOException;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -44,6 +50,26 @@ public class StaffAuthController {
         return ResponseEntity.ok(messageResponse);
     }
 
+
+    @GetMapping("/oauth2/user")
+    public void getOAuth2User(@AuthenticationPrincipal OAuth2User oAuth2User,
+                              HttpServletResponse response) throws IOException {
+
+        if (oAuth2User == null) {
+            response.sendRedirect("http://localhost:5173/admin/login?error=oauth");
+            return;
+        }
+
+        String email = oAuth2User.getAttribute("email");
+
+        // Generate JWT using Google email
+        StaffJwtResponse jwtResponse = staffAuthService.authenticateStaffWithGoogle(email);
+
+        String token = jwtResponse.getToken();
+
+        // Redirect to React with token
+        response.sendRedirect("http://localhost:5173/oauth-success?token=" + token);
+    }
     /**
      * Test endpoint to check if API is working
      * GET /api/auth/test

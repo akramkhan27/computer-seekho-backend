@@ -54,6 +54,15 @@ public class JwtUtils {
 
     }
 
+    public String generateTokenFromUsername(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
     // Validate JWT token
     public boolean validateJwtToken(String authToken) {
         try {
