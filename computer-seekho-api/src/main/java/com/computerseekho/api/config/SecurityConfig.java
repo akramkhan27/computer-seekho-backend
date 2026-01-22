@@ -2,6 +2,7 @@ package com.computerseekho.api.config;
 
 import com.computerseekho.api.security.jwt.AuthEntryPointJwt;
 import com.computerseekho.api.security.jwt.JwtAuthenticationFilter;
+import com.computerseekho.api.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import com.computerseekho.api.security.services.StaffDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -28,6 +36,9 @@ public class SecurityConfig {
 
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
+
+    @Autowired
+    private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     @Bean
     public JwtAuthenticationFilter authenticationJwtTokenFilter() {
@@ -61,17 +72,19 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/oauth2/**").permitAll()
+                                .requestMatchers("/login/oauth2/**").permitAll()
                                 .requestMatchers("/api/test/**").permitAll()
                                 .requestMatchers("/api/announcements/**").permitAll()
                                 .requestMatchers("/api/enquiries/**").permitAll()
-                                .requestMatchers(
-                                        "/api/albums/campus-life"
-                                ).permitAll()
+                                .requestMatchers("/api/albums/campus-life").permitAll()
                                 .requestMatchers("/api/courses/**").permitAll()
+                                .requestMatchers("/api/recruiters/**").permitAll()
                                 .anyRequest().authenticated()
-
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(oAuth2AuthenticationSuccessHandler)
                 );
-
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 

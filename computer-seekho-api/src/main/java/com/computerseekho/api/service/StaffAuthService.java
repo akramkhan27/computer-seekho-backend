@@ -98,4 +98,23 @@ public class StaffAuthService {
 
         return new MessageResponse("Staff registered successfully!");
     }
+
+    public StaffJwtResponse authenticateStaffWithGoogle(String email) {
+
+        Staff staff = staffRepository.findByStaffEmail(email)
+                .orElseThrow(() -> new RuntimeException("Staff not found with email: " + email));
+
+
+        String jwt = jwtUtils.generateTokenFromUsername(staff.getStaffUsername());
+
+        return new StaffJwtResponse(
+                jwt,
+                staff.getStaffId(),
+                staff.getStaffUsername(),
+                staff.getStaffEmail(),
+                staff.getStaffName(),
+                staff.getStaffRole()
+        );
+    }
+
 }
