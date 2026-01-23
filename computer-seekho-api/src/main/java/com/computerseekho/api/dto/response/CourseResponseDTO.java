@@ -13,4 +13,5 @@ public class CourseResponseDTO {
     private Integer courseDuration;
     private BigDecimal courseFees;
     private Boolean courseIsActive;
+    private String ageGrpType;
 }

@@ -5,6 +5,8 @@ import com.computerseekho.api.dto.request.CourseUpdateRequestDTO;
 import com.computerseekho.api.dto.response.CourseResponseDTO;
 import com.computerseekho.api.service.CourseService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,6 +49,12 @@ public class CourseController {
     @GetMapping("/{courseId}")
     public CourseResponseDTO getCourseById(@PathVariable Integer courseId) {
         return courseService.getCourseById(courseId);
+    }
+
+    @DeleteMapping("/{courseId}")
+    public ResponseEntity<Void> deleteCourse(@PathVariable Integer courseId){
+        courseService.deleteCourse(courseId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     // delete will be added (task pending for akram assign by sachin)
 }

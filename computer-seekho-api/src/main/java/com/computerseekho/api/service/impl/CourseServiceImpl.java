@@ -85,6 +85,17 @@ public class CourseServiceImpl implements CourseService {
         dto.setCourseDuration(course.getCourseDuration());
         dto.setCourseFees(course.getCourseFees());
         dto.setCourseIsActive(course.getCourseIsActive());
+        dto.setAgeGrpType(course.getAgeGrpType());
         return dto;
+    }
+    @Override
+    public Course getCourseEntityById(Integer id) {
+        return courseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
+    }
+
+    @Override
+    public void deleteCourse(Integer courseId){
+        courseRepository.deleteById(courseId);
     }
 }
