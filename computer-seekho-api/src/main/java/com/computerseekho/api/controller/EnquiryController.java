@@ -2,10 +2,12 @@ package com.computerseekho.api.controller;
 
 import com.computerseekho.api.dto.request.EnquiryCreateRequestDTO;
 import com.computerseekho.api.dto.request.EnquiryFollowUpRequestDTO;
+import com.computerseekho.api.dto.request.EnquiryUpdateRequestDTO;
 import com.computerseekho.api.dto.response.EnquiryResponseDTO;
 import com.computerseekho.api.entity.Enquiry;
 import com.computerseekho.api.service.EnquiryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +26,22 @@ public class EnquiryController {
         return enquiryService.createEnquiry(dto);
     }
 
+    // Get Single Enquiry by ID (for Edit functionality)
+    @GetMapping("/{id}")
+    public ResponseEntity<Enquiry> getEnquiryById(@PathVariable Integer id) {
+        Enquiry enquiry = enquiryService.getEnquiryById(id);
+        return ResponseEntity.ok(enquiry);
+    }
+
+    // Update Enquiry (Edit functionality)
+    @PutMapping("/{id}")
+    public ResponseEntity<Enquiry> updateEnquiry(
+            @PathVariable Integer id,
+            @RequestBody EnquiryUpdateRequestDTO dto) {
+        Enquiry updatedEnquiry = enquiryService.updateEnquiry(id, dto);
+        return ResponseEntity.ok(updatedEnquiry);
+    }
+
     // Follow-ups for logged-in staff (TODAY + pending)
     @GetMapping("/followups/staff/{staffId}")
     public List<EnquiryResponseDTO> getUpcomingFollowups(@PathVariable Integer staffId) {
@@ -36,10 +54,9 @@ public class EnquiryController {
         return enquiryService.getAllPendingFollowups();
     }
 
-    // CALL button action
+    // CALL button action (Follow-up update)
     @PutMapping("/followup")
     public Enquiry updateFollowup(@RequestBody EnquiryFollowUpRequestDTO dto) {
         return enquiryService.updateFollowup(dto);
     }
 }
-
