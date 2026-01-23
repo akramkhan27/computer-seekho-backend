@@ -80,6 +80,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/albums/campus-life").permitAll()
                                 .requestMatchers("/api/courses/**").permitAll()
                                 .requestMatchers("/api/recruiters/**").permitAll()
+                                .requestMatchers("/api/batches/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
