@@ -82,6 +82,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/recruiters/**").permitAll()
                                 .requestMatchers("/api/batches/**").permitAll()
                                 .requestMatchers("/api/email/**").permitAll()
+                                .requestMatchers("/api/placements/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
