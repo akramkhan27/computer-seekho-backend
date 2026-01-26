@@ -40,4 +40,53 @@ public class Announcement {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    // Getters and Setters
+    public Integer getAnnouncementId() {
+        return announcementId;
+    }
+
+    public void setAnnouncementId(Integer announcementId) {
+        this.announcementId = announcementId;
+    }
+
+    public String getAnnouncementText() {
+        return announcementText;
+    }
+
+    public void setAnnouncementText(String announcementText) {
+        this.announcementText = announcementText;
+    }
+
+    public LocalDateTime getValidFrom() {
+        return validFrom;
+    }
+
+    public void setValidFrom(LocalDateTime validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public LocalDateTime getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(LocalDateTime validTo) {
+        this.validTo = validTo;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 }

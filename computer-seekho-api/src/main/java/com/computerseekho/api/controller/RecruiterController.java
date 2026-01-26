@@ -7,7 +7,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/recruiters")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 public class RecruiterController {
 
     private final RecruiterService recruiterService;
