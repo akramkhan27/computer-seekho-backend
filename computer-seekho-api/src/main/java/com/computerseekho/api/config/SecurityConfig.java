@@ -78,6 +78,7 @@ public class SecurityConfig {
                                 .requestMatchers("/api/announcements/**").permitAll()
                                 .requestMatchers("/api/enquiries/**").permitAll()
                                 .requestMatchers("/api/albums/campus-life").permitAll()
+                                .requestMatchers("/api/albums/upload-excel").permitAll()
                                 .requestMatchers("/api/courses/**").permitAll()
                                 .requestMatchers("/api/recruiters/**").permitAll()
                                 .requestMatchers("/api/batches/**").permitAll()

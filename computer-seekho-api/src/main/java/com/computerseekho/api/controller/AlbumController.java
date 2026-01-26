@@ -1,13 +1,14 @@
 package com.computerseekho.api.controller;
 
 import com.computerseekho.api.dto.response.AlbumResponse;
+import com.computerseekho.api.entity.Image;
+import com.computerseekho.api.service.AlbumExcelService;
+import com.computerseekho.api.service.AlbumImageUploadService;
 import com.computerseekho.api.service.AlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,6 +20,13 @@ public class AlbumController {
     @Autowired
     private AlbumService albumService;
 
+    // ✅ MISSING EARLIER (NOW FIXED)
+    @Autowired
+    private AlbumExcelService albumExcelService;
+
+    @Autowired
+    private AlbumImageUploadService albumImageUploadService;
+
     /**
      * GET /api/albums/campus-life
      */
@@ -26,5 +34,24 @@ public class AlbumController {
     public ResponseEntity<List<AlbumResponse>> getCampusLifeAlbums() {
         return ResponseEntity.ok(albumService.getCampusLifeAlbums());
     }
-}
 
+    /**
+     * POST /api/albums/upload-excel
+     */
+    @PostMapping("/upload-excel")
+    public ResponseEntity<?> uploadAlbumExcel(@RequestParam("file") MultipartFile file) {
+
+        try {
+            List<Image> images = albumExcelService.parseExcel(file);
+            albumImageUploadService.saveAll(images);
+
+            return ResponseEntity.ok(
+                    "Excel uploaded successfully. Images saved: " + images.size()
+            );
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+}
