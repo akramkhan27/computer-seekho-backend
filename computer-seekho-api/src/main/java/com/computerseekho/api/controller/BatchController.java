@@ -119,6 +119,31 @@ public class BatchController {
         }
     }
 
+    // Add this to your BatchController.java
+
+    /**
+     * GET BATCHES BY COURSE ID
+     * GET /api/batches/course/{courseId}
+     */
+    @GetMapping("/course/{courseId}")
+    public ResponseEntity<List<BatchResponseDTO>> getBatchesByCourse(@PathVariable Integer courseId) {
+        try {
+            List<Batch> batches = batchService.getAllBatches().stream()
+                    .filter(batch -> batch.getCourse() != null &&
+                            batch.getCourse().getCourseId().equals(courseId))
+                    .filter(Batch::getBatchIsActive) // Only active batches
+                    .collect(Collectors.toList());
+
+            List<BatchResponseDTO> responseDTOs = batches.stream()
+                    .map(this::convertToResponseDTO)
+                    .collect(Collectors.toList());
+
+            return new ResponseEntity<>(responseDTOs, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     // ===========================
     // HELPER METHODS - DTO CONVERSION
     // ===========================
