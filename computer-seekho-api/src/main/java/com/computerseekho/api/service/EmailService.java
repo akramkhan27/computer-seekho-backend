@@ -3,6 +3,7 @@ package com.computerseekho.api.service;
 import com.computerseekho.api.dto.request.EmailRequestDTO;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -32,15 +33,47 @@ public class EmailService {
     }
 
 
-    public void sendReceiptPdfEmail(
-            String userEmail,
-            MultipartFile receiptPdf
-    ) {
+//    public void sendReceiptPdfEmail(
+//            String userEmail,
+//            MultipartFile receiptPdf
+//    ) {
+//        try {
+//            MimeMessage message = mailSender.createMimeMessage();
+//
+//            MimeMessageHelper helper =
+//                    new MimeMessageHelper(message, true);
+//
+//            helper.setTo(userEmail);
+//            helper.setSubject("Payment Receipt - Computer Seekho");
+//
+//            helper.setText(
+//                    "Hello,\n\n" +
+//                            "Please find your payment receipt attached as a PDF.\n\n" +
+//                            "Thank you for choosing Computer Seekho.\n\n" +
+//                            "Regards,\n" +
+//                            "Computer Seekho Team"
+//            );
+//
+//            helper.addAttachment(
+//                    receiptPdf.getOriginalFilename(),
+//                    receiptPdf
+//            );
+//
+//            mailSender.send(message);
+//
+//        } catch (Exception e) {
+//            throw new RuntimeException(
+//                    "Failed to send receipt PDF email",
+//                    e
+//            );
+//        }
+
+
+    public void sendReceiptPdfEmail(String userEmail, byte[] pdfBytes) {
+
         try {
             MimeMessage message = mailSender.createMimeMessage();
-
-            MimeMessageHelper helper =
-                    new MimeMessageHelper(message, true);
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
             helper.setTo(userEmail);
             helper.setSubject("Payment Receipt - Computer Seekho");
@@ -48,23 +81,17 @@ public class EmailService {
             helper.setText(
                     "Hello,\n\n" +
                             "Please find your payment receipt attached as a PDF.\n\n" +
-                            "Thank you for choosing Computer Seekho.\n\n" +
-                            "Regards,\n" +
-                            "Computer Seekho Team"
+                            "Regards,\nComputer Seekho Team"
             );
 
-            helper.addAttachment(
-                    receiptPdf.getOriginalFilename(),
-                    receiptPdf
-            );
+            helper.addAttachment("receipt.pdf", new ByteArrayResource(pdfBytes));
 
             mailSender.send(message);
 
         } catch (Exception e) {
-            throw new RuntimeException(
-                    "Failed to send receipt PDF email",
-                    e
-            );
+            throw new RuntimeException("Failed to send receipt PDF email", e);
         }
     }
+
 }
+
