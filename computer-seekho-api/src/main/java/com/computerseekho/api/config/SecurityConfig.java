@@ -85,6 +85,8 @@ public class SecurityConfig {
                                 .requestMatchers("/api/payments/**").permitAll()
                                 .requestMatchers("/api/email/**").permitAll()
                                 .requestMatchers("/api/placements/**").permitAll()
+                                .requestMatchers("/api/receipt/**").permitAll()
+                                .requestMatchers("/actuator/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2

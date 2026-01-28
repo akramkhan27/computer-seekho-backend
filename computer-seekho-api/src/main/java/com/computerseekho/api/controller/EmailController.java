@@ -24,15 +24,15 @@ public class EmailController {
     }
 
 
-    @PostMapping(
-            value = "/receipt/pdf",
-            consumes = "multipart/form-data"
-    )
-    public ResponseEntity<String> sendReceiptPdf(
-            @RequestParam("userEmail") String userEmail,
-            @RequestParam("receiptPdf") MultipartFile receiptPdf
-    ) {
-        emailService.sendReceiptPdfEmail(userEmail, receiptPdf);
-        return ResponseEntity.ok("Receipt PDF sent to user email");
-    }
+//    @PostMapping(
+//            value = "/receipt/pdf",
+//            consumes = "multipart/form-data"
+//    )
+//    public ResponseEntity<String> sendReceiptPdf(
+//            @RequestParam("userEmail") String userEmail,
+//            @RequestParam("receiptPdf") MultipartFile receiptPdf
+//    ) {
+//        emailService.sendReceiptPdfEmail(userEmail, receiptPdf);
+//        return ResponseEntity.ok("Receipt PDF sent to user email");
+//    }
 }

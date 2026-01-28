@@ -1,6 +1,7 @@
 package com.computerseekho.api.service;
 
 import com.computerseekho.api.dto.request.PaymentCreateRequestDTO;
+import com.computerseekho.api.dto.response.PaymentPdfDTO;
 import com.computerseekho.api.dto.response.PaymentResponseDTO;
 import com.computerseekho.api.entity.*;
 import com.computerseekho.api.repository.*;
@@ -121,4 +122,34 @@ public class PaymentServiceImpl implements PaymentService {
         dto.setReceiptId(receipt != null ? receipt.getReceiptId() : null);
         return dto;
     }
+
+    @Override
+    public PaymentPdfDTO getReceiptPdfData(Integer receiptId) {
+
+        List<Object[]> rows = paymentRepository.getReceiptPdfData(receiptId);
+
+        if (rows == null || rows.isEmpty()) {
+            throw new RuntimeException("No receipt found for id: " + receiptId);
+        }
+
+        Object[] row = rows.get(0);
+
+        PaymentPdfDTO dto = new PaymentPdfDTO();
+
+        dto.setStudentName((String) row[0]);
+        dto.setStudentMobile(row[1] != null ? row[1].toString() : null);
+        dto.setStudentAddress((String) row[2]);
+        dto.setStudentEmail((String) row[3]);
+        dto.setCourseName((String) row[4]);
+        dto.setAmount(((Number) row[5]).doubleValue());
+        dto.setPaymentDate(((java.sql.Date) row[6]).toLocalDate());
+        dto.setPaymentType((String) row[7]);
+        dto.setReceiptAmount(((Number) row[8]).doubleValue());
+        dto.setReceiptDate(((java.sql.Date) row[9]).toLocalDate());
+
+        return dto;
+    }
+
+
+
 }
