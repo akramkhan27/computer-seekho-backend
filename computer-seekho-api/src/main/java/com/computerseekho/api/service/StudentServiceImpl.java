@@ -1,18 +1,16 @@
 package com.computerseekho.api.service;
 
 import com.computerseekho.api.dto.request.StudentRegistrationDTO;
+import com.computerseekho.api.dto.response.RegisteredStudentResponseDTO;
 import com.computerseekho.api.dto.response.StudentResponseDTO;
-import com.computerseekho.api.entity.Enquiry;
-import com.computerseekho.api.entity.Payment;
-import com.computerseekho.api.entity.Student;
-import com.computerseekho.api.repository.EnquiryRepository;
-import com.computerseekho.api.repository.PaymentRepository;
-import com.computerseekho.api.repository.StudentRepository;
+import com.computerseekho.api.entity.*;
+import com.computerseekho.api.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,6 +20,8 @@ public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
     private final EnquiryRepository enquiryRepository;
     private final PaymentRepository paymentRepository;
+    private final ReceiptRepository receiptRepository;
+    private final PaymentTypeRepository paymentTypeRepository;
 
     @Override
     public Student saveStudent(Student student) {
@@ -106,6 +106,18 @@ public class StudentServiceImpl implements StudentService {
         return List.of(); // Placeholder
     }
 
+    // ✅ UPDATED: Only fetch students with payment AND receipt
+    @Override
+    public List<RegisteredStudentResponseDTO> getAllRegisteredStudentsWithDetails() {
+
+        List<Student> students = studentRepository.findAll();
+
+        return students.stream()
+                .map(this::mapToRegisteredStudentDTO)
+                .filter(dto -> dto != null) // Filter out students without payment/receipt
+                .collect(Collectors.toList());
+    }
+
     private StudentResponseDTO mapToResponseDTO(Student student, Enquiry enquiry) {
         StudentResponseDTO dto = new StudentResponseDTO();
         dto.setStudentId(student.getStudentId());
@@ -123,6 +135,66 @@ public class StudentServiceImpl implements StudentService {
         if (enquiry != null) {
             dto.setEnquiryId(enquiry.getEnquiryId());
         }
+
+        return dto;
+    }
+
+    // ✅ UPDATED: Returns null if student doesn't have payment or receipt
+    private RegisteredStudentResponseDTO mapToRegisteredStudentDTO(Student student) {
+
+        // ✅ CHECK 1: Student must have payment
+        List<Payment> payments = paymentRepository.findByStudentId(student.getStudentId());
+
+        if (payments.isEmpty()) {
+            return null; // Skip this student - no payment
+        }
+
+        Payment payment = payments.get(0);
+
+        // ✅ CHECK 2: Payment must have receipt
+        Optional<Receipt> receiptOpt = receiptRepository.findByPaymentId(payment.getPaymentId());
+
+        if (receiptOpt.isEmpty()) {
+            return null; // Skip this student - no receipt
+        }
+
+        Receipt receipt = receiptOpt.get();
+
+        // ✅ Student is fully registered - create DTO
+        RegisteredStudentResponseDTO dto = new RegisteredStudentResponseDTO();
+
+        // Student Info
+        dto.setStudentId(student.getStudentId());
+        dto.setStudentName(student.getStudentName());
+        dto.setStudentMobile(
+                student.getStudentMobile() != null ? student.getStudentMobile().toString() : null
+        );
+        dto.setStudentGender(student.getStudentGender());
+        dto.setStudentDob(student.getStudentDob());
+        dto.setStudentQualification(student.getStudentQualification());
+        dto.setStudentAddress(student.getStudentAddress());
+        dto.setPhotoUrl(student.getPhotoUrl());
+        dto.setRegisteredAt(student.getCreatedAt());
+
+        // Course & Batch Info
+        dto.setCourseId(student.getCourseId());
+        dto.setBatchId(student.getBatchId());
+
+        // Payment Info
+        dto.setPaymentId(payment.getPaymentId());
+        dto.setAmount(payment.getAmount());
+        dto.setPaymentDate(payment.getPaymentDate());
+        dto.setPaymentTypeId(payment.getPaymentTypeId());
+        dto.setEnquiryId(payment.getEnquiryId());
+
+        // Payment Type Description
+        paymentTypeRepository.findById(payment.getPaymentTypeId())
+                .ifPresent(pt -> dto.setPaymentTypeDesc(pt.getPaymentTypeDesc()));
+
+        // Receipt Info
+        dto.setReceiptId(receipt.getReceiptId());
+        dto.setReceiptDate(receipt.getReceiptDate());
+        dto.setReceiptAmount(receipt.getReceiptAmount());
 
         return dto;
     }

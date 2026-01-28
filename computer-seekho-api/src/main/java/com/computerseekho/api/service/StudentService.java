@@ -1,6 +1,7 @@
 package com.computerseekho.api.service;
 
 import com.computerseekho.api.dto.request.StudentRegistrationDTO;
+import com.computerseekho.api.dto.response.RegisteredStudentResponseDTO;
 import com.computerseekho.api.dto.response.StudentResponseDTO;
 import com.computerseekho.api.entity.Student;
 
@@ -21,4 +22,7 @@ public interface StudentService {
 
     // Get students by course
     List<StudentResponseDTO> getStudentsByCourse(Integer courseId);
+
+    // NEW METHOD
+    List<RegisteredStudentResponseDTO> getAllRegisteredStudentsWithDetails();
 }
