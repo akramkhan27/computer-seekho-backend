@@ -18,6 +18,6 @@ public interface StaffRepository extends JpaRepository<Staff, Integer> {
 
     Boolean existsByStaffEmail(String staffEmail);
 
-    List<Staff> findByStaffRoleAndIsActiveTrue(String staffRole);
-
+    // 🆕 Get all teaching staff
+    List<Staff> findByStaffRole(String staffRole);
 }

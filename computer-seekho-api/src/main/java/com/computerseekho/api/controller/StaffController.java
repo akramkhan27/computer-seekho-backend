@@ -1,6 +1,6 @@
 package com.computerseekho.api.controller;
 
-import com.computerseekho.api.dto.response.StaffDTO;
+import com.computerseekho.api.entity.Staff;
 import com.computerseekho.api.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,32 +8,41 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/staff")
-@CrossOrigin(origins = "*")
 public class StaffController {
 
     @Autowired
     private StaffService staffService;
 
-    // Get all faculty members (teaching staff only)
+    /**
+     * Get all teaching staff (faculty)
+     * GET /api/staff/faculty
+     */
     @GetMapping("/faculty")
-    public ResponseEntity<List<StaffDTO>> getAllFaculty() {
-        List<StaffDTO> facultyList = staffService.getAllFaculty();
-        return ResponseEntity.ok(facultyList);
+    public ResponseEntity<List<Staff>> getAllFaculty() {
+        List<Staff> faculty = staffService.getFacultyList();
+        return ResponseEntity.ok(faculty);
     }
 
-    // Get all staff members
-    @GetMapping
-    public ResponseEntity<List<StaffDTO>> getAllStaff() {
-        List<StaffDTO> staffList = staffService.getAllStaff();
-        return ResponseEntity.ok(staffList);
+    /**
+     * Get all staff
+     * GET /api/staff/all
+     */
+    @GetMapping("/all")
+    public ResponseEntity<List<Staff>> getAllStaff() {
+        List<Staff> staff = staffService.getAllStaff();
+        return ResponseEntity.ok(staff);
     }
 
-    // Get staff by ID
+    /**
+     * Get staff by ID
+     * GET /api/staff/{id}
+     */
     @GetMapping("/{id}")
-    public ResponseEntity<StaffDTO> getStaffById(@PathVariable Integer id) {
-        StaffDTO staff = staffService.getStaffById(id);
+    public ResponseEntity<Staff> getStaffById(@PathVariable Integer id) {
+        Staff staff = staffService.getStaffById(id);
         return ResponseEntity.ok(staff);
     }
 }

@@ -1,7 +1,6 @@
 package com.computerseekho.api.service;
 
 import com.computerseekho.api.dto.request.StaffLoginRequest;
-import com.computerseekho.api.dto.request.StaffSignupRequest;
 import com.computerseekho.api.dto.response.MessageResponse;
 import com.computerseekho.api.dto.response.StaffJwtResponse;
 import com.computerseekho.api.entity.Staff;
@@ -15,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class StaffAuthService {
@@ -30,6 +30,9 @@ public class StaffAuthService {
 
     @Autowired
     private JwtUtils jwtUtils;
+
+    @Autowired
+    private FileStorageService fileStorageService;
 
     // Login staff
     public StaffJwtResponse authenticateStaff(StaffLoginRequest loginRequest) {
@@ -61,38 +64,104 @@ public class StaffAuthService {
         );
     }
 
-    // Register new staff
-    public MessageResponse registerStaff(StaffSignupRequest signupRequest) {
+//    // Register new staff
+//    public MessageResponse registerStaff(StaffSignupRequest signupRequest) {
+//        // Check if username already exists
+//        if (staffRepository.existsByStaffUsername(signupRequest.getStaffUsername())) {
+//            return new MessageResponse("Error: Username is already taken!");
+//        }
+//
+//        // Check if email already exists
+//        if (staffRepository.existsByStaffEmail(signupRequest.getStaffEmail())) {
+//            return new MessageResponse("Error: Email is already in use!");
+//        }
+//
+//        // Validate staff role
+//        String role = signupRequest.getStaffRole().toLowerCase();
+//        if (!role.equals("teaching") && !role.equals("non-teaching")) {
+//            return new MessageResponse("Error: Invalid staff role! Use 'teaching' or 'non-teaching'");
+//        }
+//
+//        // Create new staff account
+//        Staff staff = new Staff(
+//                signupRequest.getStaffUsername(),
+//                signupRequest.getStaffEmail(),
+//                passwordEncoder.encode(signupRequest.getStaffPassword())  // Encrypt password
+//        );
+//
+//        // Set additional fields
+//        staff.setStaffName(signupRequest.getStaffName());
+//        staff.setPhotoUrl(signupRequest.getPhotoUrl());
+//        staff.setStaffMobile(signupRequest.getStaffMobile());
+//        staff.setStaffRole(role);
+//        staff.setStaffBio(signupRequest.getStaffBio());
+//        staff.setStaffDesignation(signupRequest.getStaffDesignation());
+//
+//        staffRepository.save(staff);
+//
+//        return new MessageResponse("Staff registered successfully!");
+//    }
+
+    /**
+     * Register new staff WITH IMAGE UPLOAD
+     */
+    public MessageResponse registerStaffWithImage(
+            MultipartFile staffImage,
+            String staffName,
+            String staffMobile,
+            String staffEmail,
+            String staffUsername,
+            String staffPassword,
+            String staffRole,
+            String staffDesignation,
+            String staffBio
+    ) {
         // Check if username already exists
-        if (staffRepository.existsByStaffUsername(signupRequest.getStaffUsername())) {
+        if (staffRepository.existsByStaffUsername(staffUsername)) {
             return new MessageResponse("Error: Username is already taken!");
         }
 
         // Check if email already exists
-        if (staffRepository.existsByStaffEmail(signupRequest.getStaffEmail())) {
+        if (staffRepository.existsByStaffEmail(staffEmail)) {
             return new MessageResponse("Error: Email is already in use!");
         }
 
         // Validate staff role
-        String role = signupRequest.getStaffRole().toLowerCase();
+        String role = staffRole.toLowerCase();
         if (!role.equals("teaching") && !role.equals("non-teaching")) {
             return new MessageResponse("Error: Invalid staff role! Use 'teaching' or 'non-teaching'");
         }
 
+        // Handle image upload
+        String photoUrl = null;
+        if (staffImage != null && !staffImage.isEmpty()) {
+            // Validate file size (max 5MB)
+            if (!fileStorageService.isValidFileSize(staffImage)) {
+                return new MessageResponse("Error: File size exceeds 5MB limit!");
+            }
+
+            try {
+                // Store image and get URL
+                photoUrl = fileStorageService.storeStaffImage(staffImage, staffUsername);
+            } catch (Exception e) {
+                return new MessageResponse("Error: Failed to upload image - " + e.getMessage());
+            }
+        }
+
         // Create new staff account
         Staff staff = new Staff(
-                signupRequest.getStaffUsername(),
-                signupRequest.getStaffEmail(),
-                passwordEncoder.encode(signupRequest.getStaffPassword())  // Encrypt password
+                staffUsername,
+                staffEmail,
+                passwordEncoder.encode(staffPassword)  // Encrypt password
         );
 
         // Set additional fields
-        staff.setStaffName(signupRequest.getStaffName());
-        staff.setPhotoUrl(signupRequest.getPhotoUrl());
-        staff.setStaffMobile(signupRequest.getStaffMobile());
+        staff.setStaffName(staffName);
+        staff.setPhotoUrl(photoUrl);  // Store image path
+        staff.setStaffMobile(staffMobile);
         staff.setStaffRole(role);
-        staff.setStaffBio(signupRequest.getStaffBio());
-        staff.setStaffDesignation(signupRequest.getStaffDesignation());
+        staff.setStaffBio(staffBio);
+        staff.setStaffDesignation(staffDesignation);
 
         staffRepository.save(staff);
 

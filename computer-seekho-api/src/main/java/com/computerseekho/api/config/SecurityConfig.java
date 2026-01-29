@@ -192,6 +192,10 @@ public class SecurityConfig {
                                 .requestMatchers("/api/staff/**").permitAll()
                                 .requestMatchers("/api/upload/**").permitAll() // Allow file upload
                                 .requestMatchers("/api/receipt/**").permitAll()
+                                .requestMatchers("/api/staff/faculty").permitAll()
+                                .requestMatchers("/api/staff/all").permitAll()
+                                .requestMatchers("/assets/**").permitAll()
+                                .requestMatchers("/api/public/**").permitAll()
                                 .requestMatchers("/actuator/**").permitAll()
                                 .anyRequest().authenticated()
                 )
