@@ -1,6 +1,5 @@
 package com.computerseekho.api.service.impl;
 
-
 import com.computerseekho.api.entity.Batch;
 import com.computerseekho.api.repository.BatchRepository;
 import com.computerseekho.api.service.BatchService;
@@ -13,8 +12,10 @@ public class BatchServiceImpl implements BatchService {
 
     private final BatchRepository batchRepository;
 
+
     public BatchServiceImpl(BatchRepository batchRepository) {
         this.batchRepository = batchRepository;
+
     }
 
     // CREATE
@@ -39,12 +40,22 @@ public class BatchServiceImpl implements BatchService {
     // UPDATE
     @Override
     public Batch updateBatch(Integer id, Batch batch) {
-
         Batch existing = getBatchById(id);
 
+        // Delete old logo if a new one is provided
+        if (batch.getBatchLogoUrl() != null &&
+                !batch.getBatchLogoUrl().equals(existing.getBatchLogoUrl()) &&
+                existing.getBatchLogoUrl() != null) {
+            try {
+
+            } catch (Exception e) {
+                System.err.println("Failed to delete old batch logo: " + e.getMessage());
+            }
+        }
+
         existing.setBatchName(batch.getBatchName());
-        existing.setBatchStartTime(batch.getBatchStartTime());
-        existing.setBatchEndTime(batch.getBatchEndTime());
+        existing.setBatchStartDate(batch.getBatchStartDate());
+        existing.setBatchEndDate(batch.getBatchEndDate());
         existing.setCourse(batch.getCourse());
         existing.setPresentationDate(batch.getPresentationDate());
         existing.setFinalPresentationDate(batch.getFinalPresentationDate());
@@ -57,9 +68,21 @@ public class BatchServiceImpl implements BatchService {
         return batchRepository.save(existing);
     }
 
-    // DELETE (Hard delete – can be soft if needed)
+    // DELETE (Hard delete)
     @Override
     public void deleteBatch(Integer id) {
+        // Get batch to delete its logo
+        Batch batch = getBatchById(id);
+
+        // Delete logo file if exists
+        if (batch.getBatchLogoUrl() != null) {
+            try {
+
+            } catch (Exception e) {
+                System.err.println("Failed to delete batch logo: " + e.getMessage());
+            }
+        }
+
         batchRepository.deleteById(id);
     }
 
