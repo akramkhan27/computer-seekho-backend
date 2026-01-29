@@ -191,6 +191,8 @@ public class SecurityConfig {
                                 .requestMatchers("/api/placements/**").permitAll()
                                 .requestMatchers("/api/staff/**").permitAll()
                                 .requestMatchers("/api/upload/**").permitAll() // Allow file upload
+                                .requestMatchers("/api/receipt/**").permitAll()
+                                .requestMatchers("/actuator/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2

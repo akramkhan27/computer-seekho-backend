@@ -15,9 +15,6 @@ public class LoggingAspect {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    // ====================================
-    // 1. LOG BEFORE SERVICE METHOD EXECUTION
-    // ====================================
     @Before("execution(* com.computerseekho.api.service.impl.*.*(..))")
     public void logBeforeMethod(JoinPoint joinPoint) {
         String methodName = joinPoint.getSignature().getName();

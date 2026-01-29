@@ -1,6 +1,7 @@
 package com.computerseekho.api.controller;
 
 import com.computerseekho.api.dto.request.StudentRegistrationDTO;
+import com.computerseekho.api.dto.response.RegisteredStudentResponseDTO;
 import com.computerseekho.api.dto.response.StudentResponseDTO;
 import com.computerseekho.api.entity.Student;
 import com.computerseekho.api.service.StudentService;
@@ -34,10 +35,21 @@ public class StudentController {
     }
 
     /**
+     * Get all registered students with complete details (payment & receipt)
+     * GET /api/students/registered
+     */
+    @GetMapping("/registered")
+    public ResponseEntity<List<RegisteredStudentResponseDTO>> getAllRegisteredStudents() {
+        List<RegisteredStudentResponseDTO> students = studentService.getAllRegisteredStudentsWithDetails();
+        return ResponseEntity.ok(students);
+    }
+
+    /**
      * Get student by ID
      * GET /api/students/{id}
      */
-    @GetMapping("/{id}")
+
+    @GetMapping("/id/{id}")
     public ResponseEntity<?> getStudentById(@PathVariable Integer id) {
         try {
             Student student = studentService.getStudentById(id);
@@ -46,6 +58,7 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
 
     /**
      * Get all students
