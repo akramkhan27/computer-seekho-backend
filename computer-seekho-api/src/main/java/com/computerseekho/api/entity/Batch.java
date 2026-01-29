@@ -1,6 +1,5 @@
 package com.computerseekho.api.entity;
 
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +8,6 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -26,11 +24,11 @@ public class Batch {
     @Column(name = "batch_name", nullable = false, length = 100)
     private String batchName;
 
-    @Column(name = "batch_start_time")
-    private LocalTime batchStartTime;
+    @Column(name = "batch_start_date")
+    private LocalDate batchStartDate;
 
-    @Column(name = "batch_end_time")
-    private LocalTime batchEndTime;
+    @Column(name = "batch_end_date")
+    private LocalDate batchEndDate;
 
     // FK → course_master
     @ManyToOne(fetch = FetchType.LAZY)
