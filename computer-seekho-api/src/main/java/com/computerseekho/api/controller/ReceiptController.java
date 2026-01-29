@@ -6,14 +6,12 @@ import com.computerseekho.api.service.EmailService;
 import com.computerseekho.api.service.PaymentService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/receipt")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class ReceiptController {
 
     private final PaymentService paymentService;
