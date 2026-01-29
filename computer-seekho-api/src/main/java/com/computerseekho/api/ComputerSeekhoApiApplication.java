@@ -9,5 +9,4 @@ public class ComputerSeekhoApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ComputerSeekhoApiApplication.class, args);
 	}
-
 }
