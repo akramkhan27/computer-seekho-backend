@@ -87,6 +87,7 @@ public class CourseServiceImpl implements CourseService {
         dto.setCourseIsActive(course.getCourseIsActive());
         dto.setAgeGrpType(course.getAgeGrpType());
         dto.setCoverPhoto(course.getCoverPhoto());
+        dto.setCourseSyllabus(course.getCourseSyllabus());
         return dto;
     }
     @Override

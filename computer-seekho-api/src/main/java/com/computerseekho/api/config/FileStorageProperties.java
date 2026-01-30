@@ -7,7 +7,12 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "file.storage")
 public class FileStorageProperties {
 
-    private String uploadDir = "src/main/resources/static/assets/staff";
+    // IMPORTANT: Use an external directory (NOT inside src/main/resources)
+    // This ensures uploaded files are immediately accessible without restart
+    // Example Windows: C:/uploads/staff
+    // Example Linux: /var/uploads/staff
+    // Example Development: ./uploads/staff (relative to project root)
+    private String uploadDir = "./uploads/staff";
 
     public String getUploadDir() {
         return uploadDir;
