@@ -32,7 +32,7 @@ public class StaffAuthService {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private FileStorageService fileStorageService;
+    private FileStorageServices fileStorageServices;
 
     // Login staff
     public StaffJwtResponse authenticateStaff(StaffLoginRequest loginRequest) {
@@ -136,13 +136,13 @@ public class StaffAuthService {
         String photoUrl = null;
         if (staffImage != null && !staffImage.isEmpty()) {
             // Validate file size (max 5MB)
-            if (!fileStorageService.isValidFileSize(staffImage)) {
+            if (!fileStorageServices.isValidFileSize(staffImage)) {
                 return new MessageResponse("Error: File size exceeds 5MB limit!");
             }
 
             try {
                 // Store image and get URL
-                photoUrl = fileStorageService.storeStaffImage(staffImage, staffUsername);
+                photoUrl = fileStorageServices.storeStaffImage(staffImage, staffUsername);
             } catch (Exception e) {
                 return new MessageResponse("Error: Failed to upload image - " + e.getMessage());
             }
